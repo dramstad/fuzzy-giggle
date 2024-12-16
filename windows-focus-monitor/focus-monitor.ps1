@@ -4,7 +4,7 @@
 # description   : Monitors the active window, and logs to console when the focus changes, and what process now have the focus.
 # author        : Anders Dramstad
 # date          : 28022024
-# version       : 0.1
+# version       : 0.2
 # usage         : Powershell, run as administrator. Run .\focus-monitor.ps1
 #
 
@@ -30,8 +30,9 @@ while ($true) {
     $process = Get-Process -Id $processId -ErrorAction SilentlyContinue
     if ($process.MainWindowTitle -ne $activeWindowTitle) {
         $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        $processpath = Get-Process -Id $processId | Select-Object -Property Path
         $activeWindowTitle = $process.MainWindowTitle
-        Write-Host "$timestamp - Active window changed to: $processId - $($process.Name) - $($process.MainWindowTitle)"
+        Write-Host "$timestamp - Active window changed to: $processId - $($process.Name) - $($process.MainWindowTitle) - $processpath"
     }
     Start-Sleep -Milliseconds 100
 }
